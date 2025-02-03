@@ -21,9 +21,9 @@ class OrderModel: ObservableObject{
     ///Use only for testing purposes
     init(){
         // Testing Code: comment out for production
-        orderItems.append(OrderItem(id:0,item: testMenuItem))
-        orderItems.append(OrderItem(id:1,item: MenuModel().menu[3],quantity: 2))
-        lastID = 1
+//        orderItems.append(OrderItem(id:0,item: testMenuItem))
+//        orderItems.append(OrderItem(id:1,item: MenuModel().menu[3],quantity: 2))
+//        lastID = 1
         //testing code end
         
     }
@@ -62,6 +62,16 @@ class OrderModel: ObservableObject{
     /// Removes the last Order
     func removeLast(){
         orderItems.removeLast()
+    }
+}
+
+
+extension OrderModel{
+    func replaceOrder(id:Int,with item:OrderItem){
+        if let index = self.orderItems.firstIndex(where: {$0.id == id}){
+            self.orderItems.remove(at: index)
+            self.orderItems.insert(item, at: index)
+        }
     }
 }
 
