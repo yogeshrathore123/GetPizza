@@ -13,6 +13,7 @@ struct ContentView: View {
     @StateObject var orders: OrderModel = OrderModel()
     @State private var showOrders: Bool = false
     @State private var selectedItem: MenuItem = noMenuItem
+    @State private var presentGrid: Bool = false
     
     var body: some View {
         VStack {
@@ -21,7 +22,7 @@ struct ContentView: View {
                 .shadow(radius: 5)
                 .environment(\.colorScheme, .light)
                  
-            StatusBarView(showOrders: $showOrders)
+            StatusBarView(showOrders: $showOrders, presentGrid: $presentGrid)
             
             if showOrders {
                 OrderView(orders: orders)
@@ -30,7 +31,12 @@ struct ContentView: View {
                     .padding(5)
                     .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 10))
                     
-                MenuView(menu: menu, selectedItem: $selectedItem)
+                if presentGrid {
+                    MenuGridView(menu: menu, selectedItem: $selectedItem)
+                } else {
+                    MenuView(menu: menu, selectedItem: $selectedItem)
+                }
+                
             }
             
             Spacer()

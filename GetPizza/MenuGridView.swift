@@ -16,7 +16,7 @@ struct MenuGridView: View {
     }
     
     var menu: [MenuItem]
-    @State var selectedItem: MenuItem = noMenuItem
+    @Binding var selectedItem: MenuItem
     
     let columnLayout = Array(repeating: GridItem(spacing: 16), count: 2)
     let columnLayout2 = Array(repeating: GridItem(), count: 5)
@@ -29,6 +29,9 @@ struct MenuGridView: View {
                 ForEach(favourite.sorted(), id: \.self) { item in
                     FavoriteTileView(menuItem: menu(id: item))
                         .matchedGeometryEffect(id: item, in: nSpace)
+                        .onTapGesture {
+                            selectedItem = menu(id: item)
+                        }
                         .onLongPressGesture {
                             if let index = favourite.firstIndex(where: {$0 == item}) {
                                 favourite.remove(at: index)
@@ -37,7 +40,7 @@ struct MenuGridView: View {
                 }
             }
             
-            Text("\(selectedItem.name)")
+            //Text("\(selectedItem.name)")
             ScrollView {
                 LazyVGrid(columns: columnLayout) {
                     ForEach(menu) { menu in
@@ -69,5 +72,5 @@ struct MenuGridView: View {
 }
 
 #Preview {
-    MenuGridView(menu: MenuModel().menu)
+    MenuGridView(menu: MenuModel().menu, selectedItem: .constant(testMenuItem))
 }
